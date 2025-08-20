@@ -1,0 +1,68 @@
+ 
+.Body {
+    font-family: Arial, sans-serif;
+    background-color: #a7a7a7; /* Light gray background */
+    height: 100vh;
+}
+
+/* .App-header section */
+.App-header {
+    margin:0 ;
+    background-color: #2c3e50; /* Dark navy */
+    color: #ffffff; /* White text */
+    text-align: center;
+    padding: 20px;
+    transition: background-color 0.3s ease;
+}
+
+/* Change .App-header color on hover */
+.App-header:hover {
+    background-color: #3d5a77; /* Slightly lighter navy on hover */
+}  
+
+
+.service-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.service-card {
+    background: rgb(252, 252, 252);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+    height: 100%;
+    margin:15px ; 
+}
+
+.service-card:hover {
+    transform: scale(1.02);
+}
+
+.service-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #d9534f;
+    margin-bottom: 10px;
+}
+
+.service-info {
+    color: #555;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+  /* new flex row */
+.service-row {
+  display: flex;
+  justify-content: space-between; /* left details / right button */
+  align-items: center;            /* vertical alignment */
+}
+
+/* left details stacked */
+.service-details {
+  display: flex;
+  flex-direction: column; 
+}
