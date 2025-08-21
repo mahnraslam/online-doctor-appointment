@@ -3,7 +3,7 @@ import { createContext,useState } from "react";
 const AppointmentContext = createContext() ; 
 
 
-const  AppointmentProvider = ({ children }) => {
+export const  AppointmentProvider = ({ children }) => {
     
 const [appointments, setAppointments] = useState([]);
   return (

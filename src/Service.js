@@ -65,7 +65,7 @@ const Service = (props) => {
    
  
   const bookService = (id) => {
-
+     
   }
   const editService = (id) => {
    
@@ -146,7 +146,7 @@ const Service = (props) => {
                     ? <div> <button className="btn btn-primary  me-3" onClick={()=> editService(service.service_id)}>Edit Service</button> 
                       <button className="btn btn-danger" onClick={()=> deleteService(service.service_id)}>Delete Service</button>
                     </div>
-                    : <button className="btn btn-primary" onClick={bookService}>Book Service</button> }
+                    : <button className="btn btn-primary" onClick={()=> bookService(props.id)}>Book Service</button> }
                 </div>
             </div>
             )
