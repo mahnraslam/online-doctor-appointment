@@ -1,4 +1,3 @@
-import { type } from '@testing-library/user-event/dist/type';
 import React from 'react' 
  
 
@@ -20,34 +19,38 @@ const Service = (props) => {
         alert('Please fill in all fields');
         return ;
       }
+      let timeStamp = new Date().toISOString() ;
+      timeStamp = timeStamp.replace('T',' ').split(".")[0] ;
       const newServiceData = {
         service_name: serviceName,
         duration: duration,
         is_active: isActive,
-        timeStramp : new Date().toLocaleString,
-        d_id : props.d_id 
+        created_at : timeStamp ,
+        created_by : props.d_id 
       }; 
       if (newService){
         setNewService(false) ;
+        console.log("fetching for adding new ")
         fetch('http://localhost:5000/services',{
           method : "POST", 
           headers: {"Content-Type" : "application/json"},
           body : JSON.stringify(newServiceData)
       })
           .then(response => response.json())
-          .then(response=> alert(response))
+          .then(response=> alert(response.message))
           .catch(error => console.error('Error in Service adding:', error));  
         setNewService(false) ; 
       }
-      else { 
+      else if(edit) { 
           setEdit(false) ; 
+          console.log("fetchingfor editing ")
           fetch(`http://localhost:5000/services/${serviceId}`,{
           method : "PUT", 
           headers: {"Content-Type" : "application/json"},
           body : JSON.stringify(newServiceData)
     })
         .then(response => response.json())
-        .then(response=> alert(response))
+        .then(response=> alert(response.message))
         .catch(error => console.error('Error in Service adding:', error));  
     } 
        setIsForm(false);  

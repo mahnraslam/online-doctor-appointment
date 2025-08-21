@@ -23,9 +23,16 @@ const getServices = async()=>{
 const updateService = async(service, s_id)=>{
     try { 
         
-         const id = parseInt(s_id, 10); 
-        const {name, email, isActive,timeStramp, d_id} = service ;
-        await con.query(`Update serivces  set name=$1 email=$2, isActive=$3 timestramp = $4 d_id= $5 where id=$6 `[name, email, isActive, timeStramp, d_id, id]) ; 
+        const id = parseInt(s_id, 10); 
+        const {service_name,duration, is_active, created_at,created_by} = service ;
+        const query = `Update services set  service_name = $1,
+                        duration=$2,
+                        is_active = $3,
+                        created_at = $4,
+                        created_by=$5
+                            where service_id=$6`;
+        const values = [service_name,duration, is_active, created_at,created_by,id] ;
+        await con.query(query,values) ;
         return "Sucessfully updated" ;
     }
     catch(err){
@@ -36,9 +43,14 @@ const updateService = async(service, s_id)=>{
 
 const addService = async(service)=>{
     try { 
-        const {name, email, isActive,timeStramp, d_id} = service ;
-        await con.query(`Insert into services(service_name, duration, is_active, created_at, created_by)
-                 Values ($1, $2, $3,$4, $5)`[name, email, isActive, timeStramp, d_id]) ;
+        const {service_name,duration, is_active, created_at,created_by} = service ;
+        const query = `Insert into  services (service_name,
+                        duration ,
+                        is_active ,
+                        created_at ,
+                        created_by) Values ($1,$2,$3,$4,$5)`; 
+        const values = [service_name,duration, is_active, created_at,created_by] ;
+        await con.query(query,values) ;
         return "Sucessfully added" ;
     }
     catch(err){
@@ -57,8 +69,7 @@ const deleteService = async(s_id)=>{
         }
         return "Success" ;
     }
-    catch(err){
-         
+    catch(err){ 
         throw new Error("Internal server error") ; 
     }
 }

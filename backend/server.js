@@ -49,22 +49,24 @@ app.delete('/services/:id', (req, res) => {
 })
 
 
-app.post('/services', (req, res) => {
-  addService(req.body)
+app.post('/services', async(req, res) => {
+  await addService(req.body)
   .then(response=>{ 
     res.json({message: response});
   })
   .catch(err => {
-     res.json({message : err}) ;
+     res.json({message : err.message}) ;
   })
 });
-app.put('/services/:id', (req, res) => {
-  updateService(req.body, req.params)
+app.put('/services/:id', async(req, res) => {
+  await updateService(req.body, req.params.id)
     .then(response=>{ 
+    console.log("completed", response) ;
     res.json({message: response});
   })
   .catch(err => {
-     res.json({message : err}) ;
+     console.log("error", err)
+     res.json({message : err.message}) ;
   })
 });
 
