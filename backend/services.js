@@ -62,7 +62,7 @@ const deleteService = async(s_id)=>{
         throw new Error("Internal server error") ; 
     }
 }
-module.exports = {addService,getServices, deleteService} ;
+module.exports = {addService,getServices, deleteService,updateService} ;
 
  
 

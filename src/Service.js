@@ -28,30 +28,29 @@ const Service = (props) => {
         d_id : props.d_id 
       }; 
       if (newService){
+        setNewService(false) ;
         fetch('http://localhost:5000/services',{
           method : "POST", 
           headers: {"Content-Type" : "application/json"},
           body : JSON.stringify(newServiceData)
       })
-          .then(response => response.text())
+          .then(response => response.json())
           .then(response=> alert(response))
           .catch(error => console.error('Error in Service adding:', error));  
         setNewService(false) ; 
       }
       else { 
-         fetch(`http://localhost:5000/services/${serviceId}`,{
+          setEdit(false) ; 
+          fetch(`http://localhost:5000/services/${serviceId}`,{
           method : "PUT", 
           headers: {"Content-Type" : "application/json"},
           body : JSON.stringify(newServiceData)
-      })
-        .then(response => response.json() )
-      .then(data => {
-        setData(data);
-      })
-      .catch(error => console.error('Error in Service editing: ', error));
+    })
+        .then(response => response.json())
+        .then(response=> alert(response))
+        .catch(error => console.error('Error in Service adding:', error));  
     } 
-      setEdit(false) ; 
-      setIsForm(false);  
+       setIsForm(false);  
     }
   
         
@@ -80,9 +79,8 @@ const Service = (props) => {
            
         })
       .then(response => response.json() )
-      .then(data => {
-        setData(data);
-      })
+      .then(msg => { alert(msg);
+      setIsForm(false) ; })
       .catch(error => console.error('Error in Service deleting:', error));
     }
 
@@ -131,7 +129,7 @@ const Service = (props) => {
 
         <div className = "Service-list">
 
-            {data.map((service, index) => (  
+            {data && data.map((service, index) => (  
             
             service.is_active  && (
             <div key={service.service_id} className="service-card">

@@ -41,7 +41,7 @@ getServices()
 app.delete('/services/:id', (req, res) => {
   deleteService(req.params.id)
   .then(response=>{ 
-    res.json({message:"Successfully deleted"});
+    res.json({message:response});
   })
   .catch(err => {
      res.json({message : err}) ;
@@ -52,7 +52,7 @@ app.delete('/services/:id', (req, res) => {
 app.post('/services', (req, res) => {
   addService(req.body)
   .then(response=>{ 
-    res.json({message:"Successfully deleted"});
+    res.json({message: response});
   })
   .catch(err => {
      res.json({message : err}) ;
@@ -61,7 +61,7 @@ app.post('/services', (req, res) => {
 app.put('/services/:id', (req, res) => {
   updateService(req.body, req.params)
     .then(response=>{ 
-    res.json({message:"Successfully deleted"});
+    res.json({message: response});
   })
   .catch(err => {
      res.json({message : err}) ;
