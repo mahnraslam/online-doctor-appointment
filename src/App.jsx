@@ -4,7 +4,7 @@ import Home from './Home.js';
 import Service from './Service.js';
 import Appointments from './Appointments.js';
 import Contact from './Contact.js';
-import Register from './Register.js'
+import Register from './Register.jsx'
 import { BrowserRouter, Routes } from 'react-router-dom';
 import React, { useState } from 'react';
 import {  Link, Route } from 'react-router-dom';

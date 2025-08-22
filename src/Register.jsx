@@ -1,4 +1,7 @@
+
 import React, { useState } from 'react'
+import {useform} from "react-hook-form"
+import { DevTool } from '@hookform/devtools';
 
 const Register = () => {
   const [username, setUsername] = useState("") ;
@@ -43,6 +46,7 @@ const Register = () => {
             <div className="col-sm-9"> <button>Login</button>  </div>
             </div>
           </form>
+          <DevTool control = {control} />
         </div>
       </div>
       </div>
