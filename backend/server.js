@@ -4,7 +4,7 @@ const express = require('express');
 const {Client} = require('pg'); 
 const cors = require('cors'); 
 const {addService,getServices, deleteService,updateService}  = require( "./services.js"  )
-
+const {addUser,getUser} = require("./user.js")
 console.log(getServices)
 
 const app = express();
@@ -65,11 +65,19 @@ app.put('/services/:id', async(req, res) => {
     res.json({message: response});
   })
   .catch(err => {
-     console.log("error", err)
      res.json({message : err.message}) ;
   })
 });
 
+app.post('/user', async(req, res) => {
+  await addUser(req.body)
+  .then(response=>{ 
+    res.json({message: response});
+  })
+  .catch(err => {
+     res.json({message : err.message}) ;
+  })
+});
 
 app.listen(5000, () => {
     console.log('Server is running on port 5000');
