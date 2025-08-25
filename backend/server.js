@@ -72,7 +72,21 @@ app.put('/services/:id', async(req, res) => {
 app.post('/user', async(req, res) => {
   await addUser(req.body)
   .then(response=>{ 
-    res.json({message: response});
+    console.log(response)
+    res.json({message: "Successfully added", user_id : response[0], role:response[1]});
+  })
+  .catch(err => {
+     res.json({message : err.message}) ;
+  })
+});
+
+app.get('/user/:name/:contactNumber/:password', async(req, res) => {
+  
+  const data = [req.params.name, req.params.contactNumber, req.params.password]
+  console.log('DATA AT SERVER ', data) ;
+  await getUser(data)
+  .then(response=>{  
+    res.json({message: "Already exist", user_id : response[0], role:response[1]});
   })
   .catch(err => {
      res.json({message : err.message}) ;

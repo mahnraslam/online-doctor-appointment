@@ -22,12 +22,11 @@ const addUser = async (data)=>{
                         contact_number ,
                         password ,
                         role ,
-                        address) Values ($1,$2,$3,$4,$5)`; 
+                        address) Values ($1,$2,$3,$4,$5) RETURNING user_id,role`; 
         const values = [username, contactNumber, password, role,location] ;
-        console.log("Recieved data", values) ;
-        await con.query(query,values) ;
-        console.log("query run") ;
-        return "Sucessfully added" ;
+     
+        const res = await con.query(query,values) ;
+            return [res.rows[0].user_id,res.rows[0].role];
     }
     catch(err){
          
@@ -36,8 +35,20 @@ const addUser = async (data)=>{
     }
 
 }
-const getUser= ()=>{
-
+const getUser= async(data)=>{
+     try { 
+        
+        const query = `Select user_id,role from users where name=$1 and contact_number = $2 and password= $3`; 
+        
+        const res = await con.query(query,data) 
+        return [res.rows[0].user_id,res.rows[0].role];
+        
+    }
+    catch(err){
+         
+        console.error(err) ;
+        throw new Error("Internal Server Error") ; 
+    }
 }
 
 module.exports = {addUser, getUser}

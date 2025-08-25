@@ -1,14 +1,16 @@
- 
-import { useState } from "react";
+
 import {useForm} from "react-hook-form" 
-
-const Register = () => { 
-
-  const [text , setText] = useState("Register")
+import { useNavigate } from "react-router-dom";
+const Register = (props) => { 
+  
+  const nav = useNavigate() ; 
   const handleLogin = () =>{
-      setText("Login") ;
-      <p> {text} </p>
+    nav("/login") ;
+    
+    
   }
+
+
   const {register, handleSubmit,formState:{errors}} = useForm(
     {defaultValues : {role : "Patient"}}
   ) ; 
@@ -19,8 +21,15 @@ const Register = () => {
           headers: {"Content-Type" : "application/json"},
           body : JSON.stringify(data)
      }).then(response => response.json() )
-      .then(response=> alert(response.message) )
-      .catch(error=>console.error('Error in Service adding:', error))
+      .then(response=> {
+        props.setId(response.user_id) ;
+        props.setIsDoctor(response.role === "Doctor")
+        alert(response.message) ; 
+        
+        nav("/") ;
+            })
+      .catch(error=>console.error('Error in making user', error)) ; 
+      
   }
   return (  
       <div className="container mt-2">
@@ -28,9 +37,9 @@ const Register = () => {
           <div className="col-md-8">
             <div className="card shadow-lg rounded">
               <div className="card-body p-4">
-                <h3 className="text-center mb-4">{text}</h3>
-          {(text ==="Register") &&
-          (<form onSubmit={ handleSubmit(onSubmit)} >
+                <h3 className="text-center mb-4">Register</h3>
+
+          <form onSubmit={ handleSubmit(onSubmit)} >
             
           <div  className="row mb-3"> 
 
@@ -84,14 +93,16 @@ const Register = () => {
         {errors.role &&  <p className ="text-danger">{errors.role.message}</p>}
             
         </div>
+
           <div  className="row mb-2">
             <button  type="submit" className="btn btn-primary">Submit</button>
           </div>
-            <div className="row  align-items-center"> Already have an account 
-            <div className="col-sm-9"> < button onclick = {handleLogin}>Login</button>  </div>
-            </div>
-          </form> 
-        )}
+
+        </form> 
+        <div className="row  align-items-center"> Already have an account 
+         <div className="col-sm-9"> <button onClick = {handleLogin}>Login</button>  </div>
+        </div>
+
         </div>
       </div>
       </div>
