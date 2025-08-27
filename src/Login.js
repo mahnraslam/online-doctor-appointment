@@ -16,6 +16,7 @@ const Login = (props) => {
       .then(response=> {
         props.setId(response.user_id) ;
         props.setIsDoctor(response.role === "Doctor")
+        nav('/') ;
        
         })
       .catch(error=>console.error('Error in getting user', error)) ; 
