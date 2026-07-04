@@ -1,58 +1,48 @@
+const bcrypt = require('bcrypt');
+const pool = require('./db');
 
-const {Client} = require('pg'); 
+const addUser = async (data) => {
+    const { username, contactNumber, password, location } = data;
 
-const con = new Client({
-    user: process.env.USER,
-    host:  process.env.HOST, 
-    database:  process.env.DATABASE_NAME,
-    password:  process.env.PASSWORD,
-    port:  process.env.DB_PORT  
-});
-
-
-con.connect()
-  .then(() => console.log('Connected to the database'))
- .catch(err => console.error('Connection error', err.stack));
-
-
-const addUser = async (data)=>{
-     try { 
-       
-        const {username, contactNumber, password, role,location} = data ;
-        const query = `Insert into  users (name,
-                        contact_number ,
-                        password ,
-                        role ,
-                        address) Values ($1,$2,$3,$4,$5) RETURNING user_id,role`; 
-        const values = [username, contactNumber, password, role,location] ;
-     
-        const res = await con.query(query,values) ;
-            return [res.rows[0].user_id,res.rows[0].role];
-    }
-    catch(err){
-         
-        console.error(err) ;
-        throw new Error("Internal Server Error") ; 
+    if (!username || !contactNumber || !password) {
+        throw new Error('Name, contact number, and password are required');
     }
 
-}
-const getUser= async(data)=>{
-     try { 
-        
-        const query = `Select user_id,role from users where name=$1 and contact_number = $2 and password= $3`; 
-        
-        const res = await con.query(query,data) 
-        return [res.rows[0].user_id,res.rows[0].role];
-        
+    const existing = await pool.query('SELECT user_id FROM users WHERE contact_number = $1', [contactNumber]);
+    if (existing.rows.length) {
+        throw new Error('Contact number already registered');
     }
-    catch(err){
-         
-        console.error(err) ;
-        throw new Error("Internal Server Error") ; 
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const query = `INSERT INTO users (name, contact_number, password, role, address)
+                   VALUES ($1, $2, $3, 'Patient', $4)
+                   RETURNING user_id, role`;
+    const values = [username, contactNumber, hashedPassword, location];
+
+    const res = await pool.query(query, values);
+    return [res.rows[0].user_id, res.rows[0].role];
+};
+
+const getUserByCredentials = async (name, contactNumber, plainPassword) => {
+    if (!name || !contactNumber || !plainPassword) {
+        throw new Error('Invalid credentials');
     }
-}
 
-module.exports = {addUser, getUser}
+    const query = `SELECT user_id, role, password FROM users
+                   WHERE name = $1 AND contact_number = $2`;
+    const res = await pool.query(query, [name, contactNumber]);
 
+    if (res.rows.length === 0) {
+        throw new Error('Invalid credentials');
+    }
 
- 
+    const user = res.rows[0];
+    const match = await bcrypt.compare(plainPassword, user.password);
+    if (!match) {
+        throw new Error('Invalid credentials');
+    }
+
+    return { user_id: user.user_id, role: user.role };
+};
+
+module.exports = { addUser, getUserByCredentials };
