@@ -2,10 +2,11 @@ import React from 'react';
 
 const authHeader = () => {
     const token = localStorage.getItem('token');
-    return {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+    const headers = {
+        'Content-Type': 'application/json'
     };
+    if (token) headers.Authorization = `Bearer ${token}`;
+    return headers;
 };
 
 const Service = (props) => {
@@ -182,9 +183,13 @@ const Service = (props) => {
                     headers: authHeader()
                 });
                 const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result.message || 'Unable to load services');
+                }
                 setData(result);
             } catch (err) {
                 console.error('Error fetching services:', err);
+                setData([]);
             }
         };
 
@@ -202,7 +207,7 @@ const Service = (props) => {
                         onChange={handleDateChange} />
                 </div>
                 <div className="d-flex flex-wrap gap-2 mt-3">
-                    {slots.map(({ time, status }) => (
+                    {Array.isArray(slots) && slots.map(({ time, status }) => (
                         <button
                             key={time}
                             className={`btn ${status === 'booked' ? 'btn-secondary' : 'btn-outline-primary'}`}
@@ -245,12 +250,12 @@ const Service = (props) => {
 
     return (
         <div className="container">
-            <headers className="headers">
+            <header className="headers">
                 <h1 className="text-center">Services</h1>
                 {props.isDoctor
                     ? <button className="btn btn-secondary mx-auto d-block" onClick={addService}>Add Service</button>
                     : <p className="text-center">We offer a variety of medical services to cater to your health needs.</p>}
-            </headers>
+            </header>
 
             <div className="Service-list">
                 {data && data.map((service) => (

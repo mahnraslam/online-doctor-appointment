@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs'); // 'bcrypt' isn't installed — bcryptjs has the same hash/compare API
 const pool = require('./db');
 
 const addUser = async (data) => {

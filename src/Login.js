@@ -32,37 +32,32 @@ const Login = (props) => {
     };
 
     return (
-        <div className="container mt-5">
-            <div className="row justify-content-center">
-                <div className="col-md-8">
-                    <div className="card shadow-lg rounded">
-                        <div className="card-body p-4">
-                            <h3 className="text-center mb-4">Login</h3>
-                            <form>
-                                <div className="row mb-3">
-                                    <label className="col-sm-4 col-form-label" htmlFor="username">Name:</label>
-                                    <div className="col-sm-8">
-                                        <input id="name" value={name} style={{ backgroundColor: '#dfdadaff' }}
-                                            type="text" onChange={(e) => setName(e.target.value)} className="form-control" />
-                                    </div>
-                                </div>
-                                <div className="row mb-3">
-                                    <label className="col-sm-4 col-form-label" htmlFor="contactNumber">WhatsApp Number</label>
-                                    <div className="col-sm-8">
-                                        <input id="contactNumber" value={contactNumber} style={{ backgroundColor: '#dfdadaff' }}
-                                            onChange={(e) => setContactNumber(e.target.value)} className="form-control" />
-                                    </div>
-                                </div>
-                                <div className="row mb-3">
-                                    <label className="col-sm-4 col-form-label" htmlFor="password">Password:</label>
-                                    <div className="col-sm-5">
-                                        <input id="password" value={password} style={{ backgroundColor: '#dfdadaff' }}
-                                            type="password" onChange={(e) => setPassword(e.target.value)} className="form-control" />
-                                    </div>
-                                </div>
-                                <button className="m-3 btn btn-primary" onClick={handleSubmit}>Submit</button>
-                            </form>
+        <div className="container" style={{ maxWidth: 480, marginTop: '3.5rem' }}>
+            <div className="card">
+                <div className="card-body p-4">
+                    <span className="hero-eyebrow">Welcome back</span>
+                    <h3 className="mb-4">Log in</h3>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label className="form-label" htmlFor="name">Name</label>
+                            <input id="name" value={name} type="text"
+                                onChange={(e) => setName(e.target.value)} className="form-control" />
                         </div>
+                        <div className="mb-3">
+                            <label className="form-label" htmlFor="contactNumber">WhatsApp Number</label>
+                            <input id="contactNumber" value={contactNumber}
+                                onChange={(e) => setContactNumber(e.target.value)} className="form-control" />
+                        </div>
+                        <div className="mb-4">
+                            <label className="form-label" htmlFor="password">Password</label>
+                            <input id="password" value={password} type="password"
+                                onChange={(e) => setPassword(e.target.value)} className="form-control" />
+                        </div>
+                        <button type="submit" className="btn btn-primary w-100">Log in</button>
+                    </form>
+                    <div className="text-center mt-3">
+                        Don't have an account?{' '}
+                        <button onClick={() => nav('/register')} className="btn btn-link p-0">Register</button>
                     </div>
                 </div>
             </div>

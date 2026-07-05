@@ -30,71 +30,56 @@ const Register = (props) => {
     };
 
     return (
-        <div className="container mt-2">
-            <div className="row justify-content-center">
-                <div className="col-md-8">
-                    <div className="card shadow-lg rounded">
-                        <div className="card-body p-4">
-                            <h3 className="text-center mb-4">Register</h3>
+        <div className="container" style={{ maxWidth: 480, marginTop: '2rem' }}>
+            <div className="card">
+                <div className="card-body p-4">
+                    <span className="hero-eyebrow">New here?</span>
+                    <h3 className="mb-4">Create your account</h3>
 
-                            <form onSubmit={handleSubmit(onSubmit)}>
-                                <div className="row mb-3">
-                                    <label className="col-sm-4 col-form-label" htmlFor="username">Name:</label>
-                                    <div className="col-sm-8">
-                                        <input type="text"
-                                            {...register('username', { required: 'Name is required', minLength: { value: 3, message: 'Name is too short' } })}
-                                            className="form-control" style={{ backgroundColor: '#dfdadaff' }} />
-                                        {errors.username && <p className="text-danger">{errors.username.message}</p>}
-                                    </div>
-                                </div>
-
-                                <div className="row mb-3">
-                                    <label className="col-sm-4 col-form-label" htmlFor="contactNumber">WhatsApp Number</label>
-                                    <div className="col-sm-8">
-                                        <input type="tel" placeholder="0302-1111111"
-                                            {...register('contactNumber', {
-                                                required: 'Contact number is required',
-                                                pattern: { value: /^0\d{3}-?\d{7}$/, message: 'Invalid number' }
-                                            })}
-                                            className="form-control" style={{ backgroundColor: '#dfdadaff' }} />
-                                        {errors.contactNumber && <p className="text-danger">{errors.contactNumber.message}</p>}
-                                    </div>
-                                </div>
-
-                                <div className="row mb-3">
-                                    <label className="col-sm-4 col-form-label" htmlFor="password">Password:</label>
-                                    <div className="col-sm-8">
-                                        <input type="password"
-                                            {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'At least 8 characters required' } })}
-                                            className="form-control" style={{ backgroundColor: '#dfdadaff' }} />
-                                        {errors.password && <p className="text-danger">{errors.password.message}</p>}
-                                    </div>
-                                </div>
-
-                                <div className="row mb-3">
-                                    <label className="col-sm-4 col-form-label" htmlFor="location">Location:</label>
-                                    <div className="col-sm-8">
-                                        <input placeholder="479 Model Town Lahore"
-                                            {...register('location')}
-                                            className="form-control" style={{ backgroundColor: '#dfdadaff' }} />
-                                    </div>
-                                </div>
-
-                                {/* Role radio buttons removed — all registrations are Patient.
-                                    Doctor accounts are seeded directly in the database. */}
-
-                                <div className="row mb-2">
-                                    <button type="submit" className="btn btn-primary">Register as Patient</button>
-                                </div>
-                            </form>
-
-                            <div className="row align-items-center mt-2">
-                                Already have an account?
-                                <div className="col-sm-9">
-                                    <button onClick={handleLogin} className="btn btn-link">Login</button>
-                                </div>
-                            </div>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className="mb-3">
+                            <label className="form-label" htmlFor="username">Name</label>
+                            <input type="text" id="username"
+                                {...register('username', { required: 'Name is required', minLength: { value: 3, message: 'Name is too short' } })}
+                                className="form-control" />
+                            {errors.username && <p className="text-danger">{errors.username.message}</p>}
                         </div>
+
+                        <div className="mb-3">
+                            <label className="form-label" htmlFor="contactNumber">WhatsApp Number</label>
+                            <input type="tel" id="contactNumber" placeholder="0302-1111111"
+                                {...register('contactNumber', {
+                                    required: 'Contact number is required',
+                                    pattern: { value: /^0\d{3}-?\d{7}$/, message: 'Invalid number' }
+                                })}
+                                className="form-control" />
+                            {errors.contactNumber && <p className="text-danger">{errors.contactNumber.message}</p>}
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label" htmlFor="password">Password</label>
+                            <input type="password" id="password"
+                                {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'At least 8 characters required' } })}
+                                className="form-control" />
+                            {errors.password && <p className="text-danger">{errors.password.message}</p>}
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="form-label" htmlFor="location">Location</label>
+                            <input id="location" placeholder="479 Model Town Lahore"
+                                {...register('location')}
+                                className="form-control" />
+                        </div>
+
+                        {/* Role radio buttons removed — all registrations are Patient.
+                            Doctor accounts are seeded directly in the database. */}
+
+                        <button type="submit" className="btn btn-primary w-100">Register as patient</button>
+                    </form>
+
+                    <div className="text-center mt-3">
+                        Already have an account?{' '}
+                        <button onClick={handleLogin} className="btn btn-link p-0">Log in</button>
                     </div>
                 </div>
             </div>
