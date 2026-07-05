@@ -1,0 +1,55 @@
+<svg viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of a doctor's availability calendar with bookable time slots">
+  <defs>
+    <filter id="soft-blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="28" />
+    </filter>
+  </defs>
+
+  <!-- background -->
+  <rect width="600" height="450" fill="#F5F7F1" />
+  <circle cx="470" cy="380" r="150" fill="#DCEAE1" opacity="0.75" filter="url(#soft-blur)" />
+  <circle cx="70" cy="60" r="90" fill="#DCEAE1" opacity="0.5" filter="url(#soft-blur)" />
+
+  <!-- card shadow -->
+  <rect x="98" y="82" width="420" height="310" rx="22" fill="#16241C" opacity="0.08" />
+
+  <!-- schedule card -->
+  <rect x="90" y="70" width="420" height="310" rx="22" fill="#FFFFFF" stroke="#DEE6DD" stroke-width="1.5" />
+
+  <text x="118" y="112" font-family="Inter, -apple-system, sans-serif" font-size="13" font-weight="600" letter-spacing="1.5" fill="#4C5B50">AVAILABILITY · TODAY</text>
+  <line x1="114" y1="126" x2="486" y2="126" stroke="#DEE6DD" stroke-width="1.5" />
+
+  <!-- time chips row 1 -->
+  <g font-family="IBM Plex Mono, Menlo, monospace" font-size="16" font-weight="600" text-anchor="middle">
+    <rect x="114" y="146" width="118" height="46" rx="23" fill="#DCEAE1" />
+    <text x="173" y="174" fill="#1F4D38">09:00</text>
+
+    <rect x="244" y="146" width="118" height="46" rx="23" fill="#DCEAE1" />
+    <text x="303" y="174" fill="#1F4D38">09:30</text>
+
+    <rect x="374" y="146" width="112" height="46" rx="23" fill="#EFEFEC" />
+    <text x="430" y="174" fill="#9AA79E">10:00</text>
+
+    <!-- time chips row 2 -->
+    <rect x="114" y="206" width="118" height="46" rx="23" fill="#DCEAE1" />
+    <text x="173" y="234" fill="#1F4D38">10:30</text>
+
+    <rect x="244" y="206" width="118" height="46" rx="23" fill="#FFFFFF" stroke="#C9862F" stroke-width="2.5" />
+    <text x="303" y="234" fill="#C9862F">11:00</text>
+
+    <rect x="374" y="206" width="112" height="46" rx="23" fill="#DCEAE1" />
+    <text x="430" y="234" fill="#1F4D38">11:30</text>
+  </g>
+
+  <!-- confirm button -->
+  <rect x="330" y="284" width="156" height="46" rx="23" fill="#2F6B4F" />
+  <text x="408" y="312" font-family="Inter, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">Book 11:00</text>
+
+  <!-- caption line -->
+  <text x="118" y="352" font-family="Inter, -apple-system, sans-serif" font-size="13" fill="#4C5B50">Every slot updates in real time — no double-booking.</text>
+
+  <!-- doctor badge -->
+  <circle cx="90" cy="70" r="36" fill="#2F6B4F" />
+  <circle cx="90" cy="58" r="10" fill="#F5F7F1" />
+  <path d="M68 92c0-14 9.8-24 22-24s22 10 22 24" fill="none" stroke="#F5F7F1" stroke-width="7" stroke-linecap="round" />
+</svg>

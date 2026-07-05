@@ -1,83 +1,74 @@
- 
+const pool = require('./db');
 
-const {Client} = require('pg'); 
+const getServices = async () => {
+    try {
+        return await pool.query('SELECT * FROM services ORDER BY service_id');
+    } catch (err) {
+        console.error('services.js getServices', err);
+        throw new Error('Internal server error');
+    }
+};
 
-const con = new Client({
-    user: process.env.USER,
-    host:  process.env.HOST, 
-    database:  process.env.DATABASE_NAME,
-    password:  process.env.PASSWORD,
-    port:  process.env.DB_PORT  
-});
-
-const getServices = async()=>{
-    try { 
-        const result = await con.query("Select * from services") ;
-        return result ;  
-    }
-    catch(err){
-        console.error(err) ;
-        throw new Error("Internal server error") ; 
-    }
-}
-const updateService = async(service, s_id)=>{
-    try { 
-        
-        const id = parseInt(s_id, 10); 
-        const {service_name,duration, is_active, created_at,created_by} = service ;
-        const query = `Update services set  service_name = $1,
-                        duration=$2,
-                        is_active = $3,
-                        created_at = $4,
-                        created_by=$5
-                            where service_id=$6`;
-        const values = [service_name,duration, is_active, created_at,created_by,id] ;
-        await con.query(query,values) ;
-        return "Sucessfully updated" ;
-    }
-    catch(err){
-        console.error(err) ;
-        throw new Error("Internal server error") ; 
-    }
-}
-
-const addService = async(service)=>{
-    try { 
-        const {service_name,duration, is_active, created_at,created_by} = service ;
-        const query = `Insert into  services (service_name,
-                        duration ,
-                        is_active ,
-                        created_at ,
-                        created_by) Values ($1,$2,$3,$4,$5)`; 
-        const values = [service_name,duration, is_active, created_at,created_by] ;
-        await con.query(query,values) ;
-        return "Sucessfully added" ;
-    }
-    catch(err){
-        console.error(err) ;
-        throw new Error("Internal server error") ; 
-    }
-}
-
-const deleteService = async(s_id)=>{
-    try { 
+const updateService = async (service, s_id, doctorId) => {
+    try {
         const id = parseInt(s_id, 10);
-        console.log("Deleting", id) ;
-        const result =  await con.query(`Delete from services where service_id = $1`,[id]) ;  
-        if (result.rowCount === 0) {
-            throw new Error("Service not found");
+        const { service_name, duration, is_active } = service;
+        if (!service_name || typeof duration === 'undefined') {
+            throw new Error('Service name and duration are required');
         }
-        return "Success" ;
-    }
-    catch(err){ 
-        throw new Error("Internal server error") ; 
-    }
-}
-module.exports = {addService,getServices, deleteService,updateService} ;
 
- 
+        const query = `UPDATE services
+                       SET service_name = $1,
+                           duration = $2,
+                           is_active = $3,
+                           updated_at = CURRENT_TIMESTAMP
+                       WHERE service_id = $4
+                         AND created_by = $5`;
+        const values = [service_name, duration, is_active, id, doctorId];
+        const result = await pool.query(query, values);
 
-con.connect()
-  .then(() => console.log('Connected to the database'))
- .catch(err => console.error('Connection error', err.stack));
+        if (result.rowCount === 0) {
+            throw new Error('Service not found or permission denied');
+        }
+
+        return 'Successfully updated';
+    } catch (err) {
+        console.error('services.js updateService', err);
+        throw new Error(err.message || 'Internal server error');
+    }
+};
+
+const addService = async (service, doctorId) => {
+    try {
+        const { service_name, duration, is_active } = service;
+        if (!service_name || typeof duration === 'undefined') {
+            throw new Error('Service name and duration are required');
+        }
+
+        const query = `INSERT INTO services (service_name, duration, is_active, created_by)
+                       VALUES ($1, $2, $3, $4)`;
+        const values = [service_name, duration, is_active ?? true, doctorId];
+        await pool.query(query, values);
+        return 'Successfully added';
+    } catch (err) {
+        console.error('services.js addService', err);
+        throw new Error(err.message || 'Internal server error');
+    }
+};
+
+const deleteService = async (s_id, doctorId) => {
+    try {
+        const id = parseInt(s_id, 10);
+        const result = await pool.query('DELETE FROM services WHERE service_id = $1 AND created_by = $2', [id, doctorId]);
+        if (result.rowCount === 0) {
+            throw new Error('Service not found or permission denied');
+        }
+        return 'Success';
+    } catch (err) {
+        console.error('services.js deleteService', err);
+        throw new Error(err.message || 'Internal server error');
+    }
+};
+
+module.exports = { addService, getServices, deleteService, updateService };
 
